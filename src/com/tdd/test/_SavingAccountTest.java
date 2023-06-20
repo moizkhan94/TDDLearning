@@ -8,6 +8,7 @@ import org.junit.Test;
 
 public class _SavingAccountTest {
 
+
 	@Test
 	public void testAmountDepositToBankAccount() {
 		SavingAccount account = new SavingAccount();
@@ -22,5 +23,14 @@ public class _SavingAccountTest {
 		assertEquals(1000, account.balance());
 		account.withdraw(500);
 		assertEquals(500, account.balance());
+	}
+	
+	@Test
+	public void testAmountWithdrawnFromBankAccountAndHaveNegativeBalance() {
+		SavingAccount account = new SavingAccount();
+		account.deposit(1000);
+		assertEquals(1000, account.balance());
+		account.withdraw(1500);
+		assertEquals(-500, account.balance());
 	}
 }
