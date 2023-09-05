@@ -4,6 +4,7 @@ public class SavingAccountYear {
 
 	private int startingBalance = 0;
 	private int interestRate;
+	private int capitalGains;
 
 	public SavingAccountYear() {
 	}
@@ -14,33 +15,32 @@ public class SavingAccountYear {
 		this.interestRate = interestRate;
 	}
 
+	public SavingAccountYear(int balance, int capitalGains, int interestRate) {
+		// TODO Auto-generated constructor stub
+		this.startingBalance = balance;
+		this.capitalGains = capitalGains;
+		this.interestRate = interestRate;
+	}
+
 	public int startingBalance() {
 		// TODO Auto-generated method stub
 		return startingBalance;
 	}
 
-	public void deposit(int ammount) {
-		startingBalance += ammount;
+	public int interestRate() {
+		return interestRate;
 	}
 
-	public int balance() {
-		return startingBalance;
-	}
-
-	public void withdraw(int ammount) {
-		startingBalance -= ammount;
+	public int endingBalance() {
+		return startingBalance + (startingBalance * interestRate / 100);
 	}
 
 	public SavingAccountYear nextYear() {
 		return new SavingAccountYear(this.endingBalance(), interestRate);
 	}
 
-	public int endingBalance() {
-		return balance() + (balance() * interestRate / 100);
-	}
-
-	public int interestRate() {
-		return interestRate;
+	public void withdraw(int amount) {
+		startingBalance -= amount;
 	}
 
 }
