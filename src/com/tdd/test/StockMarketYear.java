@@ -5,10 +5,10 @@ public class StockMarketYear {
 	private int startingBalance;
 	private InterestRate interestRate;
 	private int totalWithdrawls;
-	private int startingPrincipal;
+	private Dollars startingPrincipal;
 	private TaxRate capitalGainsTaxRate;
 
-	public StockMarketYear(int startingBalance, int startingPrincipal, InterestRate interestRate,
+	public StockMarketYear(int startingBalance, Dollars startingPrincipal, InterestRate interestRate,
 			TaxRate capitalGainsTaxRate) {
 		this.startingBalance = startingBalance;
 		this.startingPrincipal = startingPrincipal;
@@ -21,7 +21,7 @@ public class StockMarketYear {
 		return startingBalance;
 	}
 
-	public int startingPrincipal() {
+	public Dollars startingPrincipal() {
 		return startingPrincipal;
 	}
 
@@ -38,7 +38,7 @@ public class StockMarketYear {
 	}
 
 	private int capitalGainsWithdrawn() {
-		int result = (startingPrincipal() - totalWithdrawls) * -1;
+		int result = (startingPrincipal().amount() - totalWithdrawls) * -1;
 		return Math.max(0, result);
 	}
 
@@ -59,12 +59,11 @@ public class StockMarketYear {
 	}
 
 	public int endingPrincipal() {
-		int result = startingPrincipal() - totalWithdrawls;
-		return Math.max(0, result);
+		return startingPrincipal().subtractToZero(new Dollars(totalWithdrawls)).amount();
 	}
 
 	public StockMarketYear nextYear(int capitalGainTaxRate) {
-		return new StockMarketYear(this.endingBalance(), this.endingPrincipal(), this.interestRate(),
+		return new StockMarketYear(this.endingBalance(), new Dollars(this.endingPrincipal()), this.interestRate(),
 				this.capitalGainsTaxRate());
 	}
 
