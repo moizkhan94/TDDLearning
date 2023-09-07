@@ -9,13 +9,13 @@ public class _InterestRateTest {
 	@Test
 	public void nothing() {
 		InterestRate interestRate = new InterestRate(0);
-		assertEquals(0, interestRate.interestOnAmount(1000));
+		assertEquals(new Dollars(0), interestRate.interestOnAmount(new Dollars(1000)));  
 	}
 
 	@Test
 	public void interest() {
 		InterestRate rate = new InterestRate(10);
-		assertEquals(100, rate.interestOnAmount(1000));
+		assertEquals(new Dollars(100), rate.interestOnAmount(new Dollars(1000)));
 	}
  
 	@Test

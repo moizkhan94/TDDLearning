@@ -10,14 +10,12 @@ public class TaxRate {
 		this.taxRate = rateAsPercentage / 100;
 	}
 
-
-
-	public int simpleTaxFor(int amount) {
-		return (int) (taxRate * amount);
+	public Dollars simpleTaxFor(Dollars amount) {
+		return new Dollars((int) (taxRate * amount.toInt()));
 	}
 
-	public int compoundTaxFor(int amount) {
-		return (int) ((amount / (1 - taxRate)) - amount);
+	public Dollars compoundTaxFor(Dollars amount) {
+		return new Dollars((int) ((amount.toInt() / (1 - taxRate)) - amount.toInt()));
 	}
 
 	@Override

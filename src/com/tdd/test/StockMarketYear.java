@@ -43,7 +43,7 @@ public class StockMarketYear {
 	}
 
 	public Dollars capitalGainsTaxIncured() {
-		return new Dollars(capitalGainsTaxRate.compoundTaxFor(capitalGainsWithdrawn().amount()));
+		return capitalGainsTaxRate.compoundTaxFor(capitalGainsWithdrawn());
 	}
 
 	public Dollars totalWithdrawn() {
@@ -51,7 +51,7 @@ public class StockMarketYear {
 	}
 
 	public Dollars interestEraned() {
-		return new Dollars (interestRate().interestOnAmount((startingBalance.subtract(totalWithdrawn()).amount())));
+		return interestRate().interestOnAmount((startingBalance.subtract(totalWithdrawn())));
 	}
 
 	public Dollars endingBalance() {

@@ -10,9 +10,8 @@ public class Dollars {
 		this.amount = amount;
 	}
 	
-	public int amount() {
+	public int toInt() {
 		return amount;
-		//TODO: Delete Me
 	}
 
 	public Dollars add(Dollars dollars) {

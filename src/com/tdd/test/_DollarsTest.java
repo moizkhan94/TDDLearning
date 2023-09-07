@@ -25,6 +25,11 @@ public class _DollarsTest {
 		assertEquals("no negative return ---- return zero instead", new Dollars(0),
 				new Dollars(10).subtractToZero(new Dollars(30)));
 	}
+	
+	@Test
+	public void toInt() {
+		assertEquals(20, new Dollars(20).toInt());
+	}
 
 	@Test
 	public void valueObject() {
