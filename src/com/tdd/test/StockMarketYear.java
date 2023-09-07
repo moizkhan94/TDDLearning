@@ -6,11 +6,13 @@ public class StockMarketYear {
 	private int interestRate;
 	private int totalWithdrawls;
 	private int startingPrincipal;
+	private int capitalGainsTaxRate;
 
-	public StockMarketYear(int startingBalance, int startingPrincipal, int interestRate) {
+	public StockMarketYear(int startingBalance, int startingPrincipal, int interestRate, int capitalGainsTaxRate) {
 		this.startingBalance = startingBalance;
 		this.startingPrincipal = startingPrincipal;
 		this.interestRate = interestRate;
+		this.capitalGainsTaxRate = capitalGainsTaxRate;
 		this.totalWithdrawls = 0;
 	}
 
@@ -25,6 +27,10 @@ public class StockMarketYear {
 	public int interestRate() {
 		return interestRate;
 	}
+	
+	public int capitalGainsTaxRate() {
+		return capitalGainsTaxRate;
+	}
 
 	public void withdraw(int amount) {
 		this.totalWithdrawls += amount;
@@ -35,21 +41,21 @@ public class StockMarketYear {
 		return Math.max(0, result);
 	}
 
-	public int capitalGainsTaxIncured(int taxRate) {
-		return (int) (capitalGainsWithdrawn() / (1 - (taxRate / 100.0)) - capitalGainsWithdrawn());
+	public int capitalGainsTaxIncured() {
+		return (int) (capitalGainsWithdrawn() / (1 - (capitalGainsTaxRate / 100.0)) - capitalGainsWithdrawn());
 	}
 
-	public int totalWithdrawn(int capitalGainsTax) {
-		return totalWithdrawls + capitalGainsTaxIncured(capitalGainsTax);
+	public int totalWithdrawn() {
+		return totalWithdrawls + capitalGainsTaxIncured();
 	}
 
-	public int interestEraned(int capitalGainTaxRate) {
-		return (startingBalance - totalWithdrawls - capitalGainsTaxIncured(capitalGainTaxRate)) * interestRate / 100;
+	public int interestEraned() {
+		return (startingBalance - totalWithdrawls - capitalGainsTaxIncured()) * interestRate / 100;
 	}
 
-	public int endingBalance(int capitalGainTaxRate) {
-		int modifiedStart = startingBalance - totalWithdrawn(capitalGainTaxRate);
-		return modifiedStart + interestEraned(capitalGainTaxRate);
+	public int endingBalance() {
+		int modifiedStart = startingBalance - totalWithdrawn();
+		return modifiedStart + interestEraned();
 	}
 
 	public int endingPrincipal() {
@@ -58,7 +64,9 @@ public class StockMarketYear {
 	}
 
 	public StockMarketYear nextYear(int capitalGainTaxRate) {
-		return new StockMarketYear(this.endingBalance(capitalGainTaxRate), this.endingPrincipal(), this.interestRate());
+		return new StockMarketYear(this.endingBalance(), this.endingPrincipal(), this.interestRate(),
+				this.capitalGainsTaxRate);
 	}
+
 
 }
