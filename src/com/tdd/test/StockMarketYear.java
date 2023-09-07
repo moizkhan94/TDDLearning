@@ -2,15 +2,16 @@ package com.tdd.test;
 
 public class StockMarketYear {
 
-	private int startingBalance = 0;
+	private int startingBalance;
 	private int interestRate;
-	private int totalWithdrawls = 0;
+	private int totalWithdrawls;
 	private int startingPrincipal;
 
 	public StockMarketYear(int startingBalance, int startingPrincipal, int interestRate) {
 		this.startingBalance = startingBalance;
 		this.startingPrincipal = startingPrincipal;
 		this.interestRate = interestRate;
+		this.totalWithdrawls = 0;
 	}
 
 	public int startingBalance() {
@@ -19,10 +20,6 @@ public class StockMarketYear {
 
 	public int startingPrincipal() {
 		return startingPrincipal;
-	}
-
-	public int startingCapitalGains() {
-		return startingBalance - startingPrincipal;
 	}
 
 	public int interestRate() {
@@ -55,17 +52,13 @@ public class StockMarketYear {
 		return Math.max(0, result);
 	}
 
-	public int endingCapitalGains(int capitalGainsTaxRate) {
-		return endingBalance(capitalGainsTaxRate) - endingPrincipal();
-	}
-
 	public int endingBalance(int capitalGainTaxRate) {
 		int modifiedStart = startingBalance - totalWithdrawn(capitalGainTaxRate);
 		return modifiedStart + interestEraned(capitalGainTaxRate);
 	}
 
 	public StockMarketYear nextYear(int capitalGainTaxRate) {
-		return new StockMarketYear(this.endingBalance(capitalGainTaxRate), 0, interestRate);
+		return new StockMarketYear(this.endingBalance(capitalGainTaxRate), this.endingPrincipal(), this.interestRate());
 	}
 
 }

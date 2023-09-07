@@ -10,32 +10,32 @@ import org.junit.Test;
 public class _StockMarketYearTest {
 
 	@Test
-	public void startingBalanceMatchingConstructor() {
-		assertEquals(11000, newAccount().endingBalance(25));
-	}
-
-	@Test
-	public void startingPrincipalMatchesConstructor() {
+	public void startingValues() {
 		StockMarketYear year = new StockMarketYear(10000, 3000, 10);
-		assertEquals(3000, year.startingPrincipal());
+		assertEquals("starting balance", 11000, year.endingBalance(25));
+		assertEquals("starting principal", 3000, year.startingPrincipal());
+		assertEquals("intrest rate", 10, year.interestRate());
+		assertEquals("total withdrawn default", 0, year.totalWithdrawn(25));
+
 	}
 
 	@Test
-	public void interestRateMatchingConstructor() {
-		assertEquals(10, newAccount().interestRate());
-	}
-
-	@Test
-	public void startingCapitalGainsIsStartingBalanceMinusStartingPrincipal() {
+	public void endingPrincipal() {
 		StockMarketYear year = new StockMarketYear(10000, 3000, 10);
-		assertEquals(7000, year.startingCapitalGains());
+		year.withdraw(1000);
+		assertEquals("ending principal consider withdrawls", 2000, year.endingPrincipal());
+		year.withdraw(500);
+		assertEquals("ending principal consider multiplr withdrawls", 1500, year.endingPrincipal());
+		year.withdraw(3000);
+		assertEquals("ending principal never goes below to zero", 0, year.endingPrincipal());
 	}
 
 	@Test
-	public void endingPrincipalConsiderWithdawls() {
+	public void interestEarned() {
 		StockMarketYear year = new StockMarketYear(10000, 3000, 10);
+		assertEquals("basic interest earned", 1000, year.interestEraned(25));
 		year.withdraw(2000);
-		assertEquals("ending Principal", 1000, year.endingPrincipal());
+		assertEquals("withdrawls dont earn interest", 800, year.interestEraned(25));
 	}
 
 	@Test
@@ -67,32 +67,6 @@ public class _StockMarketYearTest {
 		assertEquals("capital gains tax", 333, year.capitalGainsTaxIncured(25));
 		assertEquals("total withdrawn", 1333, year.totalWithdrawn(25));
 		assertEquals("interest earned", 866, year.interestEraned(25));
-	}
-
-	@Test
-	public void endingCapitalGainsIncludesInterestEarned() {
-		StockMarketYear year = new StockMarketYear(10000, 3000, 10);
-		assertEquals("starting capital gains",7000, year.startingCapitalGains());
-		assertEquals("ending capaital gains",8000, year.endingCapitalGains(25));
-	}
-
-	@Test
-	public void endingCapitalGainsIncludesCapitalGainsWithdrawn() {
-		StockMarketYear year = new StockMarketYear(10000, 0, 10);
-		assertEquals("starting capital gains",10000, year.startingCapitalGains());
-		year.withdraw(1000);
-		assertEquals("capital Gains Withdrawn",1000, year.capitalGainsWithdrawn());
-		assertEquals("capital gains tax",333, year.capitalGainsTaxIncured(25));
-		assertEquals("intrest earned",866, year.interestEraned(25));
-		assertEquals("ending capital gains",9533, year.endingCapitalGains(25));
-
-	}
-
-	@Test
-	public void endingPrincipalNeverGoesBelowZero() {
-		StockMarketYear year = new StockMarketYear(10000, 3000, 10);
-		year.withdraw(4000);
-		assertEquals("ending Principal", 0, year.endingPrincipal());
 	}
 
 	@Test
@@ -144,15 +118,17 @@ public class _StockMarketYearTest {
 	}
 
 	@Test
-	public void nextYearStartingBalanceEqualsThisYearEnndingBalance() {
+	public void nextYear() {
 		StockMarketYear thisYear = newAccount();
-		assertEquals(thisYear.endingBalance(25), thisYear.nextYear(25).startingBalance());
+		StockMarketYear nextYear = thisYear.nextYear(25);
+		assertEquals("starting balance", thisYear.endingBalance(25), nextYear.startingBalance());
+		assertEquals("starting principal", thisYear.endingPrincipal(), nextYear.startingPrincipal());
+		assertEquals(thisYear.interestRate(), nextYear.interestRate());
 	}
 
 	@Test
-	public void nextYearsIntrestRateShouldBeEqualsToThisYearIntrestRate() {
+	public void nextYearStartingPrincipalEqualsThisYearEnndingPrincipal() {
 		StockMarketYear thisYear = newAccount();
-		assertEquals(thisYear.interestRate(), thisYear.nextYear(25).interestRate());
 	}
 
 	public StockMarketYear newAccount() {
