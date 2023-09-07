@@ -3,12 +3,13 @@ package com.tdd.test;
 public class StockMarketYear {
 
 	private int startingBalance;
-	private int interestRate;
+	private InterestRate interestRate;
 	private int totalWithdrawls;
 	private int startingPrincipal;
-	private int capitalGainsTaxRate;
+	private TaxRate capitalGainsTaxRate;
 
-	public StockMarketYear(int startingBalance, int startingPrincipal, int interestRate, int capitalGainsTaxRate) {
+	public StockMarketYear(int startingBalance, int startingPrincipal, InterestRate interestRate,
+			TaxRate capitalGainsTaxRate) {
 		this.startingBalance = startingBalance;
 		this.startingPrincipal = startingPrincipal;
 		this.interestRate = interestRate;
@@ -24,11 +25,11 @@ public class StockMarketYear {
 		return startingPrincipal;
 	}
 
-	public int interestRate() {
+	public InterestRate interestRate() {
 		return interestRate;
 	}
-	
-	public int capitalGainsTaxRate() {
+
+	public TaxRate capitalGainsTaxRate() {
 		return capitalGainsTaxRate;
 	}
 
@@ -42,7 +43,7 @@ public class StockMarketYear {
 	}
 
 	public int capitalGainsTaxIncured() {
-		return (int) (capitalGainsWithdrawn() / (1 - (capitalGainsTaxRate / 100.0)) - capitalGainsWithdrawn());
+		return capitalGainsTaxRate.compoundTaxFor(capitalGainsWithdrawn());
 	}
 
 	public int totalWithdrawn() {
@@ -50,12 +51,11 @@ public class StockMarketYear {
 	}
 
 	public int interestEraned() {
-		return (startingBalance - totalWithdrawls - capitalGainsTaxIncured()) * interestRate / 100;
+		return interestRate().interestOnAmount((startingBalance - totalWithdrawn()));
 	}
 
 	public int endingBalance() {
-		int modifiedStart = startingBalance - totalWithdrawn();
-		return modifiedStart + interestEraned();
+		return startingBalance - totalWithdrawn() + interestEraned();
 	}
 
 	public int endingPrincipal() {
@@ -65,8 +65,7 @@ public class StockMarketYear {
 
 	public StockMarketYear nextYear(int capitalGainTaxRate) {
 		return new StockMarketYear(this.endingBalance(), this.endingPrincipal(), this.interestRate(),
-				this.capitalGainsTaxRate);
+				this.capitalGainsTaxRate());
 	}
-
 
 }
